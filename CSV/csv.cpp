@@ -7,8 +7,8 @@
 #include <algorithm>
 #include <chrono>
 
-//to read text not binary data, a format, CSV.
-//Comma Separated Values File line element
+//to read text not binary data, a format, CSV
+//Comma Separated Values line to be split or joined using ','
 struct CSV {
 	std::chrono::milliseconds mTimestamp;
 	float mA, mB;
@@ -29,12 +29,12 @@ struct CSV {
 
 			};
 
-		auto values = line | std::views::split(',');
+		auto values = line | views::split(',');
 
 		auto begin = values.begin();
 		uint64_t timestamp;
 		charsAdvance(begin, timestamp, mA, mB);
-		mTimestamp = std::chrono::milliseconds(timestamp);
+		mTimestamp = chrono::milliseconds(timestamp);
 	}
 
 	std::string toString() const {
