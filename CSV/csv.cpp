@@ -13,7 +13,7 @@ struct CSV {
 	std::chrono::milliseconds mTimestamp;
 	float mA, mB;
 
-	void splitLine(std::string_view line) {
+	CSV(std::string_view line) {
 
 		using namespace std;
 
@@ -55,11 +55,9 @@ std::vector<CSV> loadAndParseCSV(const std::string& path = "C:/Users/nicho/OneDr
 	data.reserve(50'000);
 	string line;
 
-	while (getline(fin, line)) {
-		data.push_back({});
-		data.back().splitLine(line);
-	}
-
+	while (getline(fin, line))
+		data.push_back({ line });
+	
 	println("Loaded {} CSV entries", data.size());
 
 	return data;
