@@ -23,13 +23,13 @@ struct CSV {
 
 		auto charsAdvance = [&](auto& begin, auto&&... value) {
 
-			auto parse = [&](auto& value, auto& begin) {
+			auto parse = [&](auto& value) {
 				string_view sv(*begin);
 				from_chars(sv.data(), sv.data() + sv.size(), value);
 				advance(begin, 1);
 				};
 
-			(parse(value, begin), ...);
+			(parse(value), ...);
 
 			};
 
