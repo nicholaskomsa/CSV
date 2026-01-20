@@ -14,6 +14,10 @@ struct CSV {
 	float mA, mB;
 
 	CSV(std::string_view line) {
+		fromString(line);
+	}
+
+	void fromString(std::string_view line) {
 
 		using namespace std;
 
@@ -36,7 +40,6 @@ struct CSV {
 		charsAdvance(begin, timestamp, mA, mB);
 		mTimestamp = chrono::milliseconds(timestamp);
 	}
-
 	std::string toString() const {
 		return std::format("{},{},{}", mTimestamp, mA, mB);
 	}
