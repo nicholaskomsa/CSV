@@ -21,7 +21,7 @@ struct CSV {
 
 		using namespace std;
 
-		auto charsAdvance = [&](auto& begin, auto&&... value) {
+		auto charsAdvance = [&](auto& begin, auto&&... values) {
 
 			auto parse = [&](auto& value) {
 				string_view sv(*begin);
@@ -29,7 +29,7 @@ struct CSV {
 				advance(begin, 1);
 				};
 
-			(parse(value), ...);
+			(parse(values), ...);
 
 			};
 
@@ -58,7 +58,7 @@ std::vector<CSV> loadAndParseCSV(const std::string& path = "C:/Users/nicho/OneDr
 	data.reserve(50'000);
 	string line;
 
-	while (getline(fin, line))
+	while(getline(fin, line))
 		data.push_back({ line });
 	
 	println("Loaded {} CSV entries", data.size());
