@@ -7,8 +7,11 @@
 #include <algorithm>
 #include <chrono>
 
-template<typename Begin, typename... Values>
-void charsAdvance(Begin& begin, Values&&... values){
+template<typename... Values>
+void charsAdvance(std::string_view line, Values&&... values){
+	
+	auto splitLine = line | std::views::split(',');
+	auto begin = splitLine.begin();
 
 	auto parse = [&](auto& value) {
 		std::string_view sv(*begin);
@@ -31,11 +34,8 @@ struct CSV {
 
 	void fromString(std::string_view line) {
 
-		auto values = line | std::views::split(',');
-
-		auto begin = values.begin();
 		uint64_t timestamp;
-		charsAdvance(begin, timestamp, mA, mB);
+		charsAdvance(line, timestamp, mA, mB);
 		mTimestamp = std::chrono::milliseconds(timestamp);
 	}
 	std::string toString() const {
@@ -52,8 +52,7 @@ std::vector<CSV> loadAndParseCSV(const std::string& path = "C:/Users/nicho/OneDr
 	if (fin.fail())
 		throw runtime_error(format("Failed to open file: {}", path));
 
-	vector<CSV> data;
-	data.reserve(50'000);
+	vector<CSV> data; data.reserve(50'000);
 	string line;
 
 	while(getline(fin, line))
