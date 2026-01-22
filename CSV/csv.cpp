@@ -1,4 +1,3 @@
-#include <iostream>
 #include <fstream>
 #include <ranges>
 #include <string>
@@ -10,13 +9,15 @@
 template<typename... Values>
 void charsAdvance(std::string_view line, Values&&... values){
 	
-	auto splitLine = line | std::views::split(',');
+	using namespace std;
+
+	auto splitLine = line | views::split(',');
 	auto begin = splitLine.begin();
 
 	auto parse = [&](auto& value) {
-		std::string_view sv(*begin);
-		std::from_chars(sv.data(), sv.data() + sv.size(), value);
-		std::advance(begin, 1);
+		string_view sv(*begin);
+		from_chars(sv.data(), sv.data() + sv.size(), value);
+		advance(begin, 1);
 		};
 
 	(parse(values), ...);
