@@ -7,6 +7,18 @@
 #include <algorithm>
 #include <chrono>
 
+template<typename Begin, typename... Values>
+void charsAdvance(Begin& begin, Values&&... values){
+
+	auto parse = [&](auto& value) {
+		std::string_view sv(*begin);
+		std::from_chars(sv.data(), sv.data() + sv.size(), value);
+		std::advance(begin, 1);
+		};
+
+	(parse(values), ...);
+}
+
 //to read text not binary data, a format, CSV
 //Comma Separated Values line to be split or joined using ','
 struct CSV {
@@ -19,26 +31,12 @@ struct CSV {
 
 	void fromString(std::string_view line) {
 
-		using namespace std;
-
-		auto charsAdvance = [&](auto& begin, auto&&... values) {
-
-			auto parse = [&](auto& value) {
-				string_view sv(*begin);
-				from_chars(sv.data(), sv.data() + sv.size(), value);
-				advance(begin, 1);
-				};
-
-			(parse(values), ...);
-
-			};
-
-		auto values = line | views::split(',');
+		auto values = line | std::views::split(',');
 
 		auto begin = values.begin();
 		uint64_t timestamp;
 		charsAdvance(begin, timestamp, mA, mB);
-		mTimestamp = chrono::milliseconds(timestamp);
+		mTimestamp = std::chrono::milliseconds(timestamp);
 	}
 	std::string toString() const {
 		return std::format("{},{},{}", mTimestamp, mA, mB);
