@@ -16,7 +16,7 @@ void charsAdvance(std::string_view line, Values&&... values){
 
 	auto parse = [&](auto& value) {
 		string_view sv(*begin);
-		from_chars(sv.data(), sv.data() + sv.size(), value);
+		from_chars(&sv.front(), &sv.back() + 1, value);
 		advance(begin, 1);
 		};
 
