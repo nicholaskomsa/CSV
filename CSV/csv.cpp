@@ -7,12 +7,14 @@
 #include <chrono>
 
 using namespace std;
+using namespace chrono;
+using namespace views;
 
 template<typename... Values>
 void splitLine(string_view line, Values&&... values){
 	
-	auto split = line | views::split(',');
-	auto begin = split.begin();
+	auto lineElements = line | split(',');
+	auto begin = lineElements.begin();
 
 	auto parse = [&](auto& value) {
 		string_view sv(*begin); 
@@ -26,7 +28,7 @@ void splitLine(string_view line, Values&&... values){
 //to read text not binary data, a format, CSV
 //Comma Separated Values line to be split or joined using ','
 struct CSV {
-	chrono::milliseconds mTimestamp;
+	milliseconds mTimestamp;
 	float mA, mB;
 
 	CSV(std::string_view line) {
@@ -37,7 +39,7 @@ struct CSV {
 
 		uint64_t timestamp;
 		splitLine(line, timestamp, mA, mB);
-		mTimestamp = chrono::milliseconds(timestamp);
+		mTimestamp = milliseconds(timestamp);
 	}
 	string toString() const {
 		return format("{},{},{}", mTimestamp, mA, mB);
@@ -64,9 +66,9 @@ std::vector<CSV> loadAndParseCSV(const string& path = "C:/Users/nicho/OneDrive/D
 
 auto elapsedTimeTransform = [](auto& data) {
 
-	for (const auto& i : views::iota(1ULL, data.size()) | views::reverse)
+	for (const auto& i : iota(1ULL, data.size()) | views::reverse)
 		data[i].mTimestamp -= data[i - 1].mTimestamp;
-	data[0].mTimestamp = std::chrono::milliseconds(0);
+	data[0].mTimestamp = milliseconds(0);
 	};
 
 int main() {
