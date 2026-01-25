@@ -6,11 +6,11 @@
 #include <algorithm>
 #include <chrono>
 
-template<typename... Values>
-void splitLine(std::string_view line, Values&&... values){
-	
-	using namespace std;
+using namespace std;
 
+template<typename... Values>
+void splitLine(string_view line, Values&&... values){
+	
 	auto split = line | views::split(',');
 	auto begin = split.begin();
 
@@ -26,27 +26,25 @@ void splitLine(std::string_view line, Values&&... values){
 //to read text not binary data, a format, CSV
 //Comma Separated Values line to be split or joined using ','
 struct CSV {
-	std::chrono::milliseconds mTimestamp;
+	chrono::milliseconds mTimestamp;
 	float mA, mB;
 
 	CSV(std::string_view line) {
 		fromString(line);
 	}
 
-	void fromString(std::string_view line) {
+	void fromString(string_view line) {
 
 		uint64_t timestamp;
 		splitLine(line, timestamp, mA, mB);
-		mTimestamp = std::chrono::milliseconds(timestamp);
+		mTimestamp = chrono::milliseconds(timestamp);
 	}
-	std::string toString() const {
-		return std::format("{},{},{}", mTimestamp, mA, mB);
+	string toString() const {
+		return format("{},{},{}", mTimestamp, mA, mB);
 	}
 };
 
-std::vector<CSV> loadAndParseCSV(const std::string& path = "C:/Users/nicho/OneDrive/Desktop/piezo_id9.csv") {
-
-	using namespace std;
+std::vector<CSV> loadAndParseCSV(const string& path = "C:/Users/nicho/OneDrive/Desktop/piezo_id9.csv") {
 
 	ifstream fin(path);
 
@@ -66,8 +64,7 @@ std::vector<CSV> loadAndParseCSV(const std::string& path = "C:/Users/nicho/OneDr
 
 auto elapsedTimeTransform = [](auto& data) {
 
-	using namespace std::views;
-	for (const auto& i : iota(1ULL, data.size()) | reverse)
+	for (const auto& i : views::iota(1ULL, data.size()) | views::reverse)
 		data[i].mTimestamp -= data[i - 1].mTimestamp;
 	data[0].mTimestamp = std::chrono::milliseconds(0);
 	};
