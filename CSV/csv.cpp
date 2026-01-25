@@ -46,7 +46,7 @@ struct CSV {
 	}
 };
 
-std::vector<CSV> loadAndParseCSV(const string& path = "C:/Users/nicho/OneDrive/Desktop/piezo_id9.csv") {
+vector<CSV> loadAndParseCSV(const string& path = "C:/Users/nicho/OneDrive/Desktop/piezo_id9.csv") {
 
 	ifstream fin(path);
 
