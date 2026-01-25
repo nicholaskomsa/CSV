@@ -77,7 +77,7 @@ int main() {
 
 	elapsedTimeTransform(data);
 
-	for (auto& entry : data)
+	for (auto& entry : data | take(100))
 		println("{}", entry.toString());
 
 	return 0;
