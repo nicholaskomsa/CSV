@@ -66,7 +66,8 @@ std::vector<CSV> loadAndParseCSV(const std::string& path = "C:/Users/nicho/OneDr
 
 auto elapsedTimeTransform = [](auto& data) {
 
-	for (const auto& i : std::views::iota(1ULL, data.size()) | std::views::reverse)
+	using namespace std::views;
+	for (const auto& i : iota(1ULL, data.size()) | reverse)
 		data[i].mTimestamp -= data[i - 1].mTimestamp;
 	data[0].mTimestamp = std::chrono::milliseconds(0);
 	};
