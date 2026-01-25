@@ -11,8 +11,8 @@ void splitLine(std::string_view line, Values&&... values){
 	
 	using namespace std;
 
-	auto splitLine = line | views::split(',');
-	auto begin = splitLine.begin();
+	auto split = line | views::split(',');
+	auto begin = split.begin();
 
 	auto parse = [&](auto& value) {
 		string_view sv(*begin); 
