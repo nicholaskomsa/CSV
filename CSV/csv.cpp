@@ -7,7 +7,7 @@
 #include <chrono>
 
 template<typename... Values>
-void charsAdvance(std::string_view line, Values&&... values){
+void splitLine(std::string_view line, Values&&... values){
 	
 	using namespace std;
 
@@ -36,7 +36,7 @@ struct CSV {
 	void fromString(std::string_view line) {
 
 		uint64_t timestamp;
-		charsAdvance(line, timestamp, mA, mB);
+		splitLine(line, timestamp, mA, mB);
 		mTimestamp = std::chrono::milliseconds(timestamp);
 	}
 	std::string toString() const {
