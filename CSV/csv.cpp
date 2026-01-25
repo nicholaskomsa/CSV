@@ -31,7 +31,7 @@ struct CSV {
 	milliseconds mTimestamp;
 	float mA, mB;
 
-	CSV(std::string_view line) {
+	CSV(string_view line) {
 		fromString(line);
 	}
 
