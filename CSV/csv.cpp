@@ -17,8 +17,17 @@ void splitLine(string_view line, Values&&... values){
 	auto begin = lineElements.begin();
 
 	auto parse = [&](auto& value) {
-		string_view sv(*begin); 
-		from_chars(sv.data(), sv.data() + sv.size(), value);
+		using T = std::remove_cvref_t<decltype(value)>;
+
+		string_view sv(*begin);
+
+		if constexpr (std::is_same_v<T, milliseconds> || std::is_same_v<T, seconds>) {
+			uint64_t tmp;
+			from_chars(sv.data(), sv.data() + sv.size(), tmp);
+			value = T(tmp);
+		}else
+			from_chars(sv.data(), sv.data() + sv.size(), value);
+		
 		advance(begin, 1);
 		};
 
@@ -37,9 +46,7 @@ struct CSV {
 
 	void fromString(string_view line) {
 
-		uint64_t timestamp;
-		splitLine(line, timestamp, mA, mB);
-		mTimestamp = milliseconds(timestamp);
+		splitLine(line, mTimestamp, mA, mB);
 	}
 	string toString() const {
 		return format("{},{},{}", mTimestamp, mA, mB);
