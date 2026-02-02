@@ -12,7 +12,7 @@ using namespace views;
 
 
 template<class T> 
-concept ChronoDuration = requires { typename T::rep; typename T::period; };
+concept ChronoDurationConcept = requires { typename T::rep; typename T::period; };
 
 template<typename... Values>
 void splitLine(string_view line, Values&&... values){
@@ -25,7 +25,7 @@ void splitLine(string_view line, Values&&... values){
 
 		string_view sv(*begin);
 
-		if constexpr (ChronoDuration<T>) {
+		if constexpr (ChronoDurationConcept<T>) {
 			uint64_t tmp;
 			from_chars(sv.data(), sv.data() + sv.size(), tmp);
 			value = T(tmp);
