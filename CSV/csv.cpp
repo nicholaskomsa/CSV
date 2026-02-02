@@ -10,6 +10,10 @@ using namespace std;
 using namespace chrono;
 using namespace views;
 
+
+template<class T> 
+concept ChronoDuration = requires { typename T::rep; typename T::period; };
+
 template<typename... Values>
 void splitLine(string_view line, Values&&... values){
 	
@@ -21,7 +25,7 @@ void splitLine(string_view line, Values&&... values){
 
 		string_view sv(*begin);
 
-		if constexpr (std::is_same_v<T, milliseconds> || std::is_same_v<T, seconds>) {
+		if constexpr (ChronoDuration<T>) {
 			uint64_t tmp;
 			from_chars(sv.data(), sv.data() + sv.size(), tmp);
 			value = T(tmp);
@@ -45,7 +49,6 @@ struct CSV {
 	}
 
 	void fromString(string_view line) {
-
 		splitLine(line, mTimestamp, mA, mB);
 	}
 	string toString() const {
