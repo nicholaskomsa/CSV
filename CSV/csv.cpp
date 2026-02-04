@@ -10,7 +10,6 @@ using namespace std;
 using namespace chrono;
 using namespace views;
 
-
 template<class T> 
 concept ChronoDurationConcept = requires { typename T::rep; typename T::period; };
 
@@ -21,7 +20,7 @@ void splitLine(string_view line, Values&&... values){
 	auto begin = lineElements.begin();
 
 	auto parse = [&](auto& value) {
-		using T = std::remove_cvref_t<decltype(value)>;
+		using T = remove_cvref_t<decltype(value)>;
 
 		string_view sv(*begin);
 
